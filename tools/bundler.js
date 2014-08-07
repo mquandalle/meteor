@@ -909,20 +909,6 @@ _.extend(ClientTarget.prototype, {
         var mapData = new Buffer(")]}'\n" + file.sourceMap, 'utf8');
         manifestItem.sourceMap = builder.writeToGeneratedFilename(
           file.targetPath + '.map', {data: mapData});
-
-        // Use a SHA to make this cacheable.
-        var sourceMapBaseName = file.hash() + ".map";
-        // XXX When we can, drop all of this and just use the SourceMap
-        //     header. FF doesn't support that yet, though:
-        //         https://bugzilla.mozilla.org/show_bug.cgi?id=765993
-        // Note: if we use the older '//@' comment, FF 24 will print a lot
-        // of warnings to the console. So we use the newer '//#' comment...
-        // which Chrome (28) doesn't support. So we also set X-SourceMap
-        // in webapp_server.
-        file.setContents(Buffer.concat([
-          file.contents(),
-          new Buffer("\n//# sourceMappingURL=" + sourceMapBaseName + "\n")
-        ]));
         manifestItem.sourceMapUrl = require('url').resolve(
           file.url, sourceMapBaseName);
       }
