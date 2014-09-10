@@ -115,10 +115,7 @@ Autoupdate._retrySubscription = function () {
 
             var attachStylesheetLink = function (newLink) {
               document.getElementsByTagName("head").item(0).appendChild(newLink);
-
-              waitUntilCssLoads(newLink, function () {
-                Meteor.setTimeout(removeOldLinks, 200);
-              });
+              waitUntilCssLoads(newLink, removeOldLinks);
             };
 
             if (newCss.length !== 0) {
